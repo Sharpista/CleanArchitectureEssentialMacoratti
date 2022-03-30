@@ -12,7 +12,7 @@ namespace CleanArchMvc.Domain.Entities
 
         public Product(int id, string name, string description, decimal price, int stock, string image)
         {
-            DomainExceptionValidation.When(id < 0, "Invalid Id value ");
+            DomainExceptionValidation.When(id < 0, "Invalid Id value.");
             Id = id;
             ValidateDomain(name, description, price, stock, image);
         }
@@ -30,10 +30,10 @@ namespace CleanArchMvc.Domain.Entities
         private void ValidateDomain(string name, string description, decimal price, int stock, string image)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(name),
-                "Invalid name. Name is required");
+                "Invalid Name. Name is required");
 
             DomainExceptionValidation.When(name.Length < 5,
-                "Invalid name, too short minimum 5 characters");
+                "Invalid Name, too short minimum 5 characters");
 
             DomainExceptionValidation.When(string.IsNullOrEmpty(description),
                 "Invalid description. Description is required");
