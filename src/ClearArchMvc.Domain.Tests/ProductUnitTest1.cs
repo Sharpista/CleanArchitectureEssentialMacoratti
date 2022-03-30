@@ -48,12 +48,50 @@ namespace ClearArchMvc.Domain.Tests
         [Fact]
         public void CreateProduct_WithNegativePrice_DomainExceptionPriceLowerThanZero()
         {
-            Action action = () => new Product(1, "Product Name", "Lorem Ipsum Dolor", -1, 1, "TETETETETETETETETE");
+            Action action = () => new Product(1, "Product Name", "Lorem Ipsum Dolor", -1, 10, "TETETETETETETETETE");
 
             action.Should()
                 .Throw<CleanArchMvc.Domain.Validation.DomainExceptionValidation>()
                 .WithMessage("Invalid price value");
         }
+
+        [Fact]
+        public void CreateProduct_WithLongName_DomainExceptionImageWithLongName()
+        {
+            Action action = () => new Product(1, "Product Name", "Lorem Ipsum Dolor", 1, 1, "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+            action.Should()
+                .Throw<CleanArchMvc.Domain.Validation.DomainExceptionValidation>()
+                .WithMessage("Invalid image name, too long maximum 250 characters");
+        }
+
+        [Fact]
+        public void CreateProduct_WithImageNameNull_NoDomainException()
+        {
+            Action action = () => new Product(1, "Product Name", "Lorem Ipsum Dolor", 1, 1, null);
+
+            action.Should()
+                .NotThrow<CleanArchMvc.Domain.Validation.DomainExceptionValidation>();
+        }
+
+        [Fact]
+        public void CreateProduct_WithNullImage_NoDomainException()
+        {
+            Action action = () => new Product(1, "Product Name", "Lorem Ipsum Dolor", 1, 1, null);
+
+            action.Should()
+                .NotThrow<NullReferenceException>();
+        }
+
+        [Fact]
+        public void CreateProduct_WithImageNameEmpty_NoDomainException()
+        {
+            Action action = () => new Product(1, "Product Name", "Lorem Ipsum Dolor", 1, 1, "");
+
+            action.Should()
+                .NotThrow<CleanArchMvc.Domain.Validation.DomainExceptionValidation>();
+        }
+
 
         [Fact]
         public void CreateProduct_WithNegativeStock_DomainExceptionPriceLowerThanZero()
