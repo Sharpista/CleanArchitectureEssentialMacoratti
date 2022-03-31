@@ -1,11 +1,13 @@
 ﻿using CleanArchMvc.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace CleanArchMvc.Infra.Data.Context
 {
-    internal class ApplicantionDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ApplicantionDbContext(DbContextOptions<ApplicantionDbContext>options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options) : base(options)
         {
 
         }
@@ -16,7 +18,9 @@ namespace CleanArchMvc.Infra.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicantionDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
+
+       
     }
 }
