@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchMvc.Infra.Data.Repositories
 {
-    public class ProductRepository : IProductRepoistory
+    public class ProductRepository : IProductRepository
     {
          private readonly ApplicationDbContext _applicationDbContext;
 

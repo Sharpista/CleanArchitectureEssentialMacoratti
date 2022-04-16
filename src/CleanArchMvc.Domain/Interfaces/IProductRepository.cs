@@ -1,13 +1,10 @@
 ﻿using CleanArchMvc.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchMvc.Domain.Interfaces
 {
-    public interface IProductRepoistory
+    public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetProductsAsync();
         Task<Product> GetProductByIdAsync(int? id);

@@ -10,10 +10,10 @@ namespace CleanArchMvc.Application.Services
 {
     public  class ProductService : IProductService
     {
-        private IProductRepoistory _productRepoistory;
+        private IProductRepository _productRepoistory;
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepoistory productRepoistory, IMapper mapper)
+        public ProductService(IProductRepository productRepoistory, IMapper mapper)
         {
             _productRepoistory = productRepoistory;
             _mapper = mapper;
