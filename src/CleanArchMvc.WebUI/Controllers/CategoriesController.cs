@@ -1,5 +1,6 @@
 ﻿using CleanArchMvc.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CleanArchMvc.WebUI.Controllers
 {
@@ -7,9 +8,22 @@ namespace CleanArchMvc.WebUI.Controllers
     {
         private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ICategoryService service)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _categoryService = service;
+            _categoryService = categoryService;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var categories = await _categoryService.GetCategoriesAsync();
+            return View(categories);
+        }
+        [HttpPost]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
     }
 }
