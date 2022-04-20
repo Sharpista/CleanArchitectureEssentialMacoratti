@@ -6,10 +6,10 @@ namespace CleanArchMvc.Application.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryDTO>>GetCategoriesAsync();
-        Task<CategoryDTO> GetCategoryByIdAsync(int? id);
-        Task AddAsync(CategoryDTO category);
-        Task UpdateAsync(CategoryDTO category);
-        Task DeleteAsync(int? id);
+        Task<IEnumerable<CategoryDTO>>GetCategories();
+        Task<CategoryDTO> GetCategoryById(int? id);
+        Task Create(CategoryDTO category);
+        Task Update(CategoryDTO category);
+        Task Delete(int? id);
     }
 }

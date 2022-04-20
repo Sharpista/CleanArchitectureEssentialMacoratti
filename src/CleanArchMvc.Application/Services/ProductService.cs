@@ -1,57 +1,83 @@
 ﻿using AutoMapper;
 using CleanArchMvc.Application.DTOs;
 using CleanArchMvc.Application.Interfaces;
-using CleanArchMvc.Domain.Entities;
-using CleanArchMvc.Domain.Interfaces;
+using CleanArchMvc.Application.Products.Commands;
+using CleanArchMvc.Application.Products.Queries;
+using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanArchMvc.Application.Services
 {
-    public  class ProductService : IProductService
+    public class ProductService : IProductService
     {
-        private IProductRepository _productRepoistory;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public ProductService(IProductRepository productRepoistory, IMapper mapper)
+        public ProductService(IMediator mediator, IMapper mapper)
         {
-            _productRepoistory = productRepoistory;
+            _mediator = mediator;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetProductsAsync()
+        public async Task<IEnumerable<ProductDTO>> GetProducts()
         {
-            var productsEntity = await _productRepoistory.GetProductsAsync();
-            return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
+            var productsQuery = new GetProductsQuery();
+
+            if (productsQuery == null)
+            {
+                throw new ApplicationException($"Entity could be not loaded");
+            }
+            var result = await _mediator.Send(productsQuery);
+            return _mapper.Map<IEnumerable<ProductDTO>>(result);
         }
-        public async Task<ProductDTO> GetProductByIdAsync(int? id)
+        public async Task<ProductDTO> GetProductById(int? id)
         {
-            var productEntity = await _productRepoistory.GetProductByIdAsync(id);
-            return _mapper.Map<ProductDTO>(productEntity);
+            var productByIdQuery = new GetProductByIdQuery(id.Value);
+
+            if (productByIdQuery == null)
+            {
+                throw new ApplicationException($"Entity could be not loaded");
+            }
+            var result = await _mediator.Send(productByIdQuery);
+
+            return _mapper.Map<ProductDTO>(result);
         }
 
-        public async Task<ProductDTO> GetProductCategory(int? id)
+        //public async Task<ProductDTO> GetProductCategory(int? id)
+        //{
+        //    var productByIdQuery = new GetProductByIdQuery(id.Value);
+
+        //    if (productByIdQuery == null)
+        //    {
+        //        throw new ApplicationException($"Entity could be not loaded");
+        //    }
+        //    var result = await _mediator.Send(productByIdQuery);
+
+        //    return _mapper.Map<ProductDTO>(result);
+        //}
+
+        public async Task Create(ProductDTO product)
         {
-            var productEntity = await _productRepoistory.GetProductCategoryAsync(id);
-            return _mapper.Map<ProductDTO>(productEntity);
+            var productCreateCommand = _mapper.Map<ProductCreateCommand>(product);
+
+            await _mediator.Send(productCreateCommand);
         }
 
-        public async Task AddAsync(ProductDTO product)
+        public async Task Update(ProductDTO product)
         {
-            var productEntiy =  _mapper.Map<Product>(product);
-            await _productRepoistory.CreateProductAsync(productEntiy);
-        }
+            var productUpdateCommand = _mapper.Map<ProductUpdateCommand>(product);
 
-        public async Task UpdateAsync(ProductDTO product)
-        {
-            var productEntiy = _mapper.Map<Product>(product);
-            await _productRepoistory.UpdateProductAsync(productEntiy);
+            await _mediator.Send(productUpdateCommand);
         }
-        public async Task DeleteAsync(int? id)
+        public async Task Delete(int? id)
         {
-            var productEntity = _productRepoistory.GetProductByIdAsync(id).Result;
+            var productCommandRemove = new ProductRemoveCommand(id.Value);
 
-            await _productRepoistory.RemoveProductASync(productEntity);
+            if (productCommandRemove == null) throw new ApplicationException($"Entity could be not loaded");
+            await _mediator.Send(productCommandRemove);
+
         }
 
 
